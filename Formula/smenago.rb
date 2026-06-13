@@ -6,12 +6,12 @@ class Smenago < Formula
   license "MIT"
   head "https://github.com/azranel/screen-menago.git", branch: "main"
 
+  depends_on "rust" => :build
+
   # `cargo` downloads crate dependencies from crates.io during the build, and
   # Homebrew otherwise denies network access (and reads of ~/.cargo) in the
   # build sandbox. The test block uses `--dry-run`, so no network is needed there.
   allow_network_access! :build
-
-  depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
