@@ -63,6 +63,23 @@ still fetches the tagged source and checks its `sha256`, so this needs the
 formula's `sha256` to be filled in for a real release.) To build the latest
 `main` instead of a tag: `brew install --HEAD azranel/screen-menago/smenago`.
 
+### Troubleshooting: install fails instantly with a `build.rb ... exited with 1` error
+
+If `brew install` dies immediately — before any compilation, with empty
+`~/Library/Logs/Homebrew/smenago/` — and you have `HOMEBREW_REQUIRE_TAP_TRUST`
+set (check `brew config`), this is a Homebrew interaction, not a smenago problem:
+Homebrew's build sandbox denies reads of your home directory, so the sandboxed
+build can't read the tap-trust file (`~/.homebrew/trust.json`) to confirm the
+tap is trusted, and aborts. It affects *any* third-party tap built from source.
+
+Work around it by disabling the trust requirement for the install:
+
+```console
+HOMEBREW_NO_REQUIRE_TAP_TRUST=1 brew install azranel/screen-menago/smenago
+```
+
+(A plain `cargo install --path .` from a clone is unaffected.)
+
 ## Configure
 
 `smenago` reads `~/.config/smenago/config.json` (override with `--config <path>`
