@@ -32,7 +32,7 @@ class Smenago < Formula
     (testpath/"shot.png").write("fake-png-bytes")
 
     output = shell_output(
-      "#{bin}/smenago --config #{testpath}/config.json --dry-run --quiet #{testpath}/shot.png"
+      "#{bin}/smenago --config #{testpath}/config.json --dry-run --quiet #{testpath}/shot.png",
     )
     assert_match %r{^https://pub-test\.r2\.dev/screenshots/}, output
   end
