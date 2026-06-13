@@ -2,8 +2,7 @@ class Smenago < Formula
   desc "Upload screenshots to S3-compatible storage and get a public link"
   homepage "https://github.com/azranel/screen-menago"
   url "https://github.com/azranel/screen-menago/archive/refs/tags/v0.1.0.tar.gz"
-  # Run `shasum -a 256 <tarball>` on the release tarball and paste it here.
-  sha256 "REPLACE_WITH_RELEASE_TARBALL_SHA256"
+  sha256 "fb1146f90fe2399ffe2787810f3f593ee322ceec11ca108a2dfed9f37153512a"
   license "MIT"
   head "https://github.com/azranel/screen-menago.git", branch: "main"
 
