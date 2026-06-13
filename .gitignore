@@ -1,0 +1,21 @@
+# Rust build artifacts
+/target
+
+# Backup files from rustfmt
+**/*.rs.bk
+
+# Debug symbols
+*.pdb
+
+# macOS
+.DS_Store
+
+# Editor / LSP caches
+/.ruby-lsp/
+
+# Claude Code runtime state
+/.claude/scheduled_tasks.lock
+
+# Local scratch / personal config copies (real config lives in ~/.config/smenago/)
+/config.local.json
+*.local.json

@@ -1,0 +1,40 @@
+class Smenago < Formula
+  desc "Upload screenshots to S3-compatible storage and get a public link"
+  homepage "https://github.com/azranel/screen-menago"
+  url "https://github.com/azranel/screen-menago/archive/refs/tags/v0.1.0.tar.gz"
+  # Run `shasum -a 256 <tarball>` on the release tarball and paste it here.
+  sha256 "REPLACE_WITH_RELEASE_TARBALL_SHA256"
+  license "MIT"
+  head "https://github.com/azranel/screen-menago.git", branch: "main"
+
+  depends_on "rust" => :build
+
+  def install
+    system "cargo", "install", *std_cargo_args
+    # `smenago completions <shell>` prints a completion script to stdout.
+    generate_completions_from_executable(bin/"smenago", "completions")
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/smenago --version")
+
+    # A dry run computes the object key and public URL without any network
+    # call or real credentials, so it is safe to exercise in the sandbox.
+    (testpath/"config.json").write <<~JSON
+      {
+        "account_id": "testaccount",
+        "bucket": "test-bucket",
+        "access_key_id": "AKIATEST",
+        "secret_access_key": "secrettest",
+        "public_url_base": "https://pub-test.r2.dev",
+        "key_prefix": "screenshots"
+      }
+    JSON
+    (testpath/"shot.png").write("fake-png-bytes")
+
+    output = shell_output(
+      "#{bin}/smenago --config #{testpath}/config.json --dry-run --quiet #{testpath}/shot.png"
+    )
+    assert_match %r{^https://pub-test\.r2\.dev/screenshots/}, output
+  end
+end
